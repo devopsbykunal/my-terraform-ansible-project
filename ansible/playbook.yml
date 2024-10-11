@@ -1,0 +1,65 @@
+- hosts: dev_servers
+  become: yes
+  tasks:
+    - name: Install Java
+      apt:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: Download Tomcat
+      get_url:
+        url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.70/bin/apache-tomcat-9.0.70.tar.gz
+        dest: /opt/
+        
+    - name: Extract Tomcat
+      unarchive:
+        src: /opt/apache-tomcat-9.0.70.tar.gz
+        dest: /opt/
+        remote_src: yes
+
+    - name: Start Tomcat
+      command: /opt/apache-tomcat-9.0.70/bin/startup.sh
+
+- hosts: test_servers
+  become: yes
+  tasks:
+    - name: Install Java
+      apt:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: Download Tomcat
+      get_url:
+        url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.70/bin/apache-tomcat-9.0.70.tar.gz
+        dest: /opt/
+        
+    - name: Extract Tomcat
+      unarchive:
+        src: /opt/apache-tomcat-9.0.70.tar.gz
+        dest: /opt/
+        remote_src: yes
+
+    - name: Start Tomcat
+      command: /opt/apache-tomcat-9.0.70/bin/startup.sh
+
+- hosts: nexus
+  become: yes
+  tasks:
+    - name: Install Java for Nexus
+      apt:
+        name: openjdk-11-jdk
+        state: present
+
+    - name: Download Nexus
+      get_url:
+        url: https://download.sonatype.com/nexus/3/latest-unix.tar.gz
+        dest: /opt/
+        
+    - name: Extract Nexus
+      unarchive:
+        src: /opt/latest-unix.tar.gz
+        dest: /opt/
+        remote_src: yes
+
+    - name: Start Nexus
+      command: /opt/nexus-3*/bin/nexus start
